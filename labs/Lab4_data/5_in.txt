@@ -1,0 +1,28 @@
+a = Stack()
+b = Stack()
+c = Stack()
+n = 0
+
+with open("Lab4_data/3_in.txt") as file:
+    discs = [int(line.rstrip()) for line in file]
+    discs.reverse()
+    for disc in discs:
+        a.push(disc)
+        n += 1
+
+moves = []
+
+def hanoi(n, stack_from, stack_to, stack_temp):
+    if n == 0: return
+    hanoi(n - 1, stack_from, stack_temp, stack_to)
+    stack_to[0].push(stack_from[0].pop())
+    moves.append((stack_from[1], stack_to[1]))
+    hanoi(n - 1, stack_temp, stack_to, stack_from)
+
+hanoi(n, (a, "A"), (c, "C"), (b, "B"))
+
+with open("Lab4_data/3_out.txt", 'w') as file:
+    for move in moves:
+        s = f"{move[0]} => {move[1]}"
+        file.write(s + "\n")  
+        print(s)
